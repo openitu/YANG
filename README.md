@@ -1,1 +1,8 @@
-# ITU YANG
+# ITU YANG Module repository
+
+## For the convenience of other SDOs that are developing YANG modules for transport equipment management ITU T has made a copy of the YANG modules developed by ITU-T SG15 available in this repository.
+## The published/ directory contains copies of YANG modules that are an integral part of approved ITU T Recommendations. The official and normative versions of these YANG modules are integral components of the respective ITU-T Recommendations, which are exclusively available through the ITU official channels and publications. These official versions can only be modified by using the ITU-T standardization procedures, that requires the approval of a revision, amendment, or corrigendum of the corresponding ITU T Recommendation. 
+## The draft/ directory contains copies of YANG modules that are an integral part of ITU T Recommendations currently under development. The original files are under the control of ITU T and are held on an ITU file server. Modifications to these draft versions are exclusively managed using the formal ITU-T standardization procedures. Each of these YANG modules can only be modified by the Question that is responsible for the corresponding Recommendation.
+## This Git repository is not the official source for these YANG modules that are an integral part of ITU-T Recommendations. They are provided on this repository as a service to the community to enhance discoverability and facilitate the use of ITU-T YANG modules. For official ITU-T Recommendations, please refer to the ITU website.
+## All issues submitted to the issue tracking system for this repository will be reviewed by the Question responsible for the corresponding Recommendation.
+
