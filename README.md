@@ -11,7 +11,7 @@
 - All issues submitted to the issue tracking system for this repository will be reviewed by the Question responsible for the corresponding Recommendation.
 
 # Copyright release
-Subject to the conditions below, ITU grants users a limited, royalty-free, non-exclusive, revocable license to copy and use, but not to modify, the YANG modules located in the [https://github.com/openitu/YANG/tree/main/standard/ITU-T/](https://github.com/openitu/YANG/tree/main/standard/ITU-T/)  directory in their implementations:
+Subject to the conditions below, ITU grants users a limited, royalty-free, non-exclusive, revocable license to copy and use, but not to modify, the YANG modules located in the [https://github.com/openitu/YANG/tree/main](https://github.com/openitu/YANG/tree/main) directory and all subdirectories in their implementations:
 
 ## Conditions of Use:
 a.	No Modification: Users are expressly prohibited from altering, adapting, or modifying the ITU-T YANG modules in any way. By way of clarification, the permission to "use" the ITU-T YANG modules includes the ability to ‘augment’ them within the user's own YANG modules. Augmentation is a standard YANG mechanism for extending existing data models. However, this license does not permit users to copy portions of the ITU-T YANG modules into new, independently created YANG modules, even if in a different namespace. Such actions would be considered unauthorized modifications.
