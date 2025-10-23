@@ -1,0 +1,189 @@
+module itut-mpls-tp-shared-ring-protection {
+  yang-version 1.1;
+  namespace "urn:itu:t:rec:mpls-tp-ne-resilience:yang:"
+          + "itut-mpls-tp-shared-ring-protection";
+  prefix msrp;
+
+  organization
+    "ITU-T Study Group 15 (SG15) - International Telecommunication
+     Union";
+  contact
+    "tsbsg15@itu.int";
+  description
+    "This module defines a YANG data model for configuring the
+     MPLS-TP ring protection (MSRP) capabilities defined in
+     ITU-T G.8132.
+
+     Copyright(C) ITU (2025).
+
+     All rights reserved. This version of this YANG module is part of
+     ITU-T G.8152.2 Resilience information/data models for the
+     MPLS-TP network element; see the Recommendation itself for full
+     legal notices.";
+  reference
+    "ITU-T G.8132 v1.1 (08/2019)";
+
+  revision 2025-06-13 {
+    description
+      "Added RPS state reporting.";
+    reference
+      "ITU-T G.8152.2 v2.0 (06/2025)";
+  }
+  revision 2024-08-29 {
+    description
+      "Initial version.";
+    reference
+      "ITU-T G.8152.2 v1.2 (08/2024)";
+  }
+
+  /*
+   * Typedefs
+   */
+
+  typedef protection-type {
+    type enumeration {
+      enum wrapping {
+        description
+          "The wrapping protection type.";
+      }
+      enum short-wrapping {
+        description
+          "The short-wrapping protection type.";
+      }
+      enum steering {
+        description
+          "The steering protection type.";
+      }
+    }
+    description
+      "The shared ring protection type.";
+    reference
+      " ITU-T G.8132 v1.1 (08/2019): clause 9";
+  }
+
+  typedef command-type {
+    type enumeration {
+      enum lockout-of-prototection {
+        description
+          "The Lockout of protection (LO-P) external command.";
+      }
+      enum lockout-of-working {
+        description
+          "The Lockout of working (LO-W) external command.";
+      }
+      enum forced-switch {
+        description
+          "The Forced switch (FS) external command.";
+      }
+      enum MANUAL_SWITCH {
+        description
+          "The Manual switch external command.";
+      }
+      enum EXERCISE {
+        description
+          "The Exercise external command.";
+      }
+      enum clear {
+        description
+          "The Clear external command.";
+      }
+    }
+    description
+      "The type of the shared ring protection external command.";
+    reference
+      "ITU-T G.8132 v1.1 (08/2019): clauses 16.1";
+  }
+
+  typedef protection-state {
+    type enumeration {
+      enum idle {
+        description
+          "The Idle State.";
+      }
+      enum switching {
+        description
+          "The Switching State.";
+      }
+      enum pass-through {
+        description
+          "The Pass-Through State.";
+      }
+    }
+    description
+      "The Ring Protection Switching (RPS) State.";
+    reference
+      "ITU-T G.8132 v1.1 (08/2019): clause 14.3
+
+       IETF RFC 8227: section 5.2.4";
+  }
+
+  /*
+   * Data nodes
+   */
+
+  container mpls-tp-shared-ring-protections {
+    description
+      "MPLS-TP shared ring protection (MSRP) configuration and
+       state.";
+    list mpls-tp-shared-ring-protection {
+      key "shared-ring-protection-id";
+      description
+        "An MPLS-TP shared ring protection (MSRP) instance.";
+      action external-command {
+        description
+          "Actions for shared ring protection external commands.";
+        input {
+          leaf command-type {
+            type command-type;
+            description
+              "The type of the shared ring protection external
+               command.";
+          }
+        }
+      }
+      leaf shared-ring-protection-id {
+        type string;
+        description
+          "The identifier of an MPLS-TP shared ring protection
+           (MSRP) instance.";
+      }
+      leaf protection-type {
+        type protection-type;
+        default "wrapping";
+        description
+          "The shared ring protection type.";
+        reference
+          " ITU-T G.8132 v1.1 (08/2019): clause 9";
+      }
+      leaf wait-to-restore {
+        type uint8 {
+          range "5..12";
+        }
+        default "5";
+        description
+          "The Wait To Restore (WTR) time.";
+        reference
+          "ITU-T G.8132 v1.1 (08/2019): clause 11";
+      }
+      leaf hold-off-time {
+        type uint64;
+        description
+          "The Hold Off Time (HoT).
+
+           The suggested range is 0 to 10 seconds, in steps of 100
+           milliseconds.";
+        reference
+          " ITU-T G.8132 v1.1 (08/2019): clause 13";
+      }
+      leaf rps-protection-state {
+        type protection-state;
+        config false;
+        description
+          "The Ring Protection Switching (RPS) state of the ring
+           node.";
+        reference
+          "ITU-T G.8132 v1.1 (08/2019): clause 14.3";
+      }
+    }
+  }
+}

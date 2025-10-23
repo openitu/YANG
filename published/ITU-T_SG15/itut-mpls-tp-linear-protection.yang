@@ -1,0 +1,378 @@
+module itut-mpls-tp-linear-protection {
+  yang-version 1.1;
+  namespace "urn:itu:t:rec:mpls-tp-ne-resilience:yang:"
+          + "itut-mpls-tp-linear-protection";
+  prefix tp-lp;
+
+  import itut-mpls-tp-oam {
+    prefix tp-oam;
+    reference
+      "ITU-T G.8152.1 v1.1 (01/2023)";
+  }
+  import ietf-connection-oriented-oam {
+    prefix co-oam;
+    reference
+      "IETF RFC 8531";
+  }
+
+  organization
+    "ITU-T Study Group 15 (SG15) - International Telecommunication
+     Union";
+  contact
+    "tsbsg15@itu.int";
+  description
+    "This module defines a YANG data model for configuring the
+     MPLS-TP linear protection capabilities defined in ITU-T G.8131.
+
+     Copyright(C) ITU (2025).
+
+     All rights reserved. This version of this YANG module is part of
+     ITU-T G.8152.2 Resilience information/data models for the
+     MPLS-TP network element; see the Recommendation itself for full
+     legal notices.";
+  reference
+    "ITU-T G.8131 v2.3 (11/2018)";
+
+  revision 2025-06-13 {
+    description
+      "Added APS state reporting.";
+    reference
+      "ITU-T G.8152.2 v2.0 (06/2025)";
+  }
+  revision 2024-08-29 {
+    description
+      "Editorial updates.";
+    reference
+      "ITU-T G.8152.2 v1.2 (08/2024)";
+  }
+  revision 2022-11-29 {
+    description
+      "Added top-level container for the list of MPLS-TP linear
+       protection instances.";
+    reference
+      "ITU-T G.8152.2 v1.1 (11/2022)";
+  }
+  revision 2021-01-13 {
+    description
+      "Initial version.";
+    reference
+      "ITU-T G.8152.2 v1.0 (01/2021)";
+  }
+
+  /*
+   * Typedefs
+   */
+
+  typedef sd-protection-type {
+    type enumeration {
+      enum enabled {
+        description
+          "Enable protection switching when Signal Degrade (SD)
+           conditions are detected.";
+      }
+      enum disabled {
+        description
+          "Disable protection switching when Signal Degrade (SD)
+           conditions are detected.";
+      }
+    }
+    description
+      "Enable or disable protection switching when Signal Degrade
+       (SD) conditions are detected.";
+    reference
+      "ITU-T G.8131 v2.3 (11/2018): clause 8.14
+
+       ITU-T G.8151 v6.0 (10/2020): table 8-4";
+  }
+
+  typedef protection-type {
+    type enumeration {
+      enum 1-plus-1-unidir-no-apc {
+        description
+          "The 1+1 unidirectional protection type, with no APC.";
+      }
+      enum 1-plus-1-unidir-with-apc {
+        description
+          "The 1+1 unidirectional protection type, with APC.";
+      }
+      enum 1-plus-1-bidir-with-apc {
+        description
+          "The 1+1 bidirectional protection type, with APC.";
+      }
+      enum 1-for-1-bidir-with-apc {
+        description
+          "The 1:1 bidirectional protection type, with APC.";
+      }
+    }
+    description
+      "The protection type for linear protection.";
+    reference
+      "ITU-T G.8131 v2.3 (11/2018): clause 8.1.2";
+  }
+
+  typedef reversion-mode {
+    type enumeration {
+      enum revertive {
+        description
+          "Revertive operation type.";
+      }
+      enum non-revertive {
+        description
+          "Non-revertive operation type.";
+      }
+    }
+    description
+      "The operation type (revertive or non-revertive).";
+    reference
+      "ITU-T G.8131 v2.3 (11/2018): clauses 6.3 and 8.1.3";
+  }
+
+  typedef command-type {
+    type enumeration {
+      enum lockout-of-protection {
+        description
+          "The Lockout of protection (LO) external command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.1";
+      }
+      enum forced-switch {
+        description
+          "The Forced switch (FS) external command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.1";
+      }
+      enum manual-switch-to-working {
+        description
+          "The Manual switch to working (MS-W) external command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.1";
+      }
+      enum manual-switch-to-protection {
+        description
+          "The Manual switch to protection (MS-P) external
+           command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.1";
+      }
+      enum exercise {
+        description
+          "The Exercise external command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.1";
+      }
+      enum clear {
+        description
+          "The Clear external command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.1";
+      }
+      enum freeze {
+        description
+          "The Freeze external command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.2";
+      }
+      enum clear-freeze {
+        description
+          "The clear Freeze external command.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 7.2";
+      }
+    }
+    description
+      "The type of linear protection external command.";
+    reference
+      "ITU-T G.8131 v2.3 (11/2018): clauses 7.1 and 7.2";
+  }
+
+  typedef protection-state {
+    type enumeration {
+      enum normal {
+        description
+          "The Normal State.";
+      }
+      enum unavailable {
+        description
+          "The Unavailable State.";
+      }
+      enum protecting-failure {
+        description
+          "The Protecting Failure State.";
+      }
+      enum switching-administrative {
+        description
+          "The Switching Administrative State.";
+      }
+      enum exercise {
+        description
+          "The Exercise State.";
+      }
+      enum wait-to-restore {
+        description
+          "The Wait-to-restore (WTR) State.";
+      }
+      enum do-not-revert {
+        description
+          "The Do-not-revert (DNR) State.";
+      }
+    }
+    description
+      "The Automatic Protection Coordination (APC) State.";
+    reference
+      "ITU-T G.8131 v2.3 (11/2018): clause 7.3";
+  }
+
+  /*
+   * Groupings
+   */
+
+  grouping mpls-tp-ma-ref {
+    description
+      "Reference to an MPLS-TP Maintenance Association (MA).";
+    leaf technology {
+      type leafref {
+        path "/co-oam:domains/co-oam:domain/co-oam:technology";
+      }
+      must "derived-from-or-self(current(), 'tp-oam:mpls-tp')";
+      mandatory true;
+      description
+        "Used to reference MPLS-TP domains.";
+    }
+    leaf md-name-string {
+      type leafref {
+        path "/co-oam:domains/co-oam:domain[co-oam:technology="
+           + "current()/../technology]/co-oam:md-name-string";
+      }
+      mandatory true;
+      description
+        "Reference to an MPLS-TP Maintenance Domain (MD).";
+    }
+    leaf ma-name-string {
+      type leafref {
+        path "/co-oam:domains/co-oam:domain[co-oam:technology="
+           + "current()/../technology][co-oam:md-name-string="
+           + "current()/../md-name-string]/co-oam:mas/co-oam:ma"
+           + "/co-oam:ma-name-string";
+      }
+      mandatory true;
+      description
+        "Reference to a Maintenance Association (MA) within the
+         MPLS-TP Maintenance Domain (MD).";
+    }
+  }
+
+  /*
+   * Data nodes
+   */
+
+  container mpls-tp-linear-protections {
+    description
+      "MPLS-TP linear protection configuration and state.";
+    list mpls-tp-linear-protection {
+      key "linear-protection-id";
+      description
+        "An MPLS-TP linear protection instance.";
+      action external-command {
+        description
+          "Actions for linear protection external commands.";
+        input {
+          leaf command-type {
+            type command-type;
+            mandatory true;
+            description
+              "The type of the linear protection external command.";
+          }
+        }
+      }
+      leaf linear-protection-id {
+        type string;
+        description
+          "The identifier of an MPLS-TP linear protection
+           instance.";
+      }
+      leaf protection-type {
+        type protection-type;
+        default "1-for-1-bidir-with-apc";
+        description
+          "The linear protection type.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clause 8.1.2";
+      }
+      leaf sd-protection-enabled {
+        type sd-protection-type;
+        default "disabled";
+        description
+          "Enable or disable protection switching when Signal
+           Degrade (SD) conditions are detected.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clause 8.14
+
+           ITU-T G.8151 v6.0 (10/2020): table 8-4";
+      }
+      leaf reversion-mode {
+        type reversion-mode;
+        default "revertive";
+        description
+          "The operation type (revertive or non-revertive).";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clauses 6.3 and 8.1.3";
+      }
+      leaf wait-to-restore {
+        when '../reversion-mode = "revertive"' {
+          description
+            "When the reversion mode is revertive.";
+        }
+        type uint8 {
+          range "5..12";
+        }
+        units "minutes";
+        default "5";
+        description
+          "The Wait To Restore (WTR) time.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clause 8.12";
+      }
+      leaf hold-off-time {
+        type uint64;
+        units "milli-seconds";
+        default "0";
+        description
+          "The Hold Off Time (HoT).
+
+           The suggested range is 0 to 10 seconds, in steps of 100
+           milliseconds.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clause 8.11";
+      }
+      container working-path-ma {
+        description
+          "The MPLS-TP Maintenance Association (MA) monitoring the
+           working path.";
+        uses mpls-tp-ma-ref;
+      }
+      container protection-path-ma {
+        must '(md-name-string != ../working-path-ma'
+           + '/md-name-string) or (ma-name-string != ..'
+           + '/working-path-ma/ma-name-string)' {
+          error-message
+            "The MPLS-TP Maintenance Association (MA) monitoring the
+             protection path shall be different from the MA
+             monitoring the working path.";
+        }
+        description
+          "The Maintenance Association (MA) monitoring the protection
+           path.";
+        uses mpls-tp-ma-ref;
+      }
+      leaf apc-protection-state {
+        type protection-state;
+        config false;
+        description
+          "The Automatic Protection Coordination (APC) state of the
+           linear protection group.";
+        reference
+          "ITU-T G.8131 v2.3 (11/2018): clause 7.3";
+      }
+    }
+  }
+}
