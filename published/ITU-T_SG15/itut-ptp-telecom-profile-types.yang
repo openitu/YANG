@@ -1,0 +1,538 @@
+module itut-ptp-telecom-profile-types {
+  yang-version 1.1;
+  namespace "urn:itu:t:rec:sync-ne:yang:"
+          + "itut-ptp-telecom-profile-types";
+  prefix ptp-tlp-types;
+
+  organization
+    "ITU-T Study Group 15 (SG15) - International Telecommunication
+     Union";
+  contact
+    "tsbsg15@itu.int";
+  description
+    "This module contains a collection of generally useful YANG data
+     type and grouping definitions specific to the PTP Telecom
+     Profiles defined in ITU-T G.8265.1, G.8275.1 and G.8275.2.
+
+     The model fully conforms to the Network Management Datastore
+     Architecture (NMDA).
+
+     Copyright(C) ITU (2025).
+
+     All rights reserved. This version of this YANG module is part of
+     ITU-T G.7721.1 Data model of synchronization management; see the
+     Recommendation itself for full legal notices.";
+  reference
+    "ITU-T G.8265.1 v4.1 (08/2024)
+
+     ITU-T G.8275.1 v4.2 (08/2024)
+
+     ITU-T G.8275.2 v3.2 (08/2024)";
+
+  revision 2025-08-22 {
+    description
+      "Updated copyright and license terms.";
+    reference
+      "ITU-T G.7721.1 v2.0 (08/2025)";
+  }
+  revision 2024-12-07 {
+    description
+      "Initial version.";
+    reference
+      "ITU-T G.7721.1 v1.1 (12/2024)";
+  }
+
+  /*
+   * Identites
+   */
+
+  identity G.8275.1-node-class {
+    description
+      "The base identity used to define the node classes for
+       G.8275.1 PTP Telecom Profiles.
+
+       YANG identity is used so that other SDOs can assign values,
+       using numeric range 61 to FF Hex.";
+    reference
+      "ITU-T G.8275.1 v4.2 (08/2024): table 4";
+  }
+
+  identity G.8275.2-node-class {
+    description
+      "The base identity used to define the node classes for
+       G.8275.2 PTP Telecom Profiles.
+
+       YANG identity is used so that other SDOs can assign values,
+       using numeric range 61 to FF hex.";
+    reference
+      "ITU-T G.8275.2 v3.2 (08/2024): table 6";
+  }
+
+  identity prtc-a {
+    base G.8275.1-node-class;
+    base G.8275.2-node-class;
+    description
+      "Clock performance compliance to PRTC-A.
+
+       Numeric value is 11 hex.";
+    reference
+      "ITU-T G.8272 v3.2 (11/2022)";
+  }
+
+  identity prtc-b {
+    base G.8275.1-node-class;
+    base G.8275.2-node-class;
+    description
+      "Clock performance compliance to PRTC-B.
+
+       Numeric value is 12 hex.";
+    reference
+      "ITU-T G.8272 v3.2 (11/2022)";
+  }
+
+  identity eprtc-a {
+    base G.8275.1-node-class;
+    base G.8275.2-node-class;
+    description
+      "Clock performance compliance to ePRTC-A.
+
+       Numeric value is 21 hex.";
+    reference
+      "ITU-T G.8272.1 v2.0 (01/2024)";
+  }
+
+  identity cnprtc {
+    base G.8275.1-node-class;
+    base G.8275.2-node-class;
+    description
+      "Clock performance compliance to cnPRTC.
+
+       Numeric value is 31 hex.";
+    reference
+      "ITU-T G.8272.2 v1.0 (01/2024)";
+  }
+
+  identity class-a {
+    base G.8275.1-node-class;
+    base G.8275.2-node-class;
+    description
+      "Clock performance compliance to Class-A.
+
+       Numeric value is 41 hex.";
+    reference
+      "ITU-T G.8273.2 v5.1 (08/2024)
+
+       ITU-T G.8273.3 v2.1 (08/2024)
+
+       ITU-T G.8273.4 v2.0 (08/2024)";
+  }
+
+  identity class-b {
+    base G.8275.1-node-class;
+    base G.8275.2-node-class;
+    description
+      "Clock performance compliance to Class-B.
+
+       Numeric value is 42 hex.";
+    reference
+      "ITU-T G.8273.2 v5.1 (08/2024)
+
+       ITU-T G.8273.3 v2.1 (08/2024)
+
+       ITU-T G.8273.4 v2.0 (08/2024)";
+  }
+
+  identity class-c {
+    base G.8275.1-node-class;
+    description
+      "Clock performance compliance to Class-C.
+
+       Numeric value is 43 hex.";
+    reference
+      "ITU-T G.8273.2 v5.1 (08/2024)
+
+       ITU-T G.8273.3 v2.1 (08/2024)";
+  }
+
+  identity class-d {
+    base G.8275.1-node-class;
+    description
+      "Clock performance compliance to Class-D.
+
+       Numeric value is 44 hex.";
+    reference
+      "ITU-T G.8273.2 v5.1 (08/2024)";
+  }
+
+  /*
+   * Typedefs
+   */
+
+  typedef ptp-telecom-profile-type {
+    type enumeration {
+      enum G.8265.1 {
+        description
+          "The G.8265.1 PTP Telecom Profile.";
+        reference
+          "ITU-T G.8265.1 v4.1 (08/2024)";
+      }
+      enum G.8275.1 {
+        description
+          "The G.8275.1 PTP Telecom Profile.";
+        reference
+          "ITU-T G.8275.1 v4.2 (08/2024)";
+      }
+      enum G.8275.2 {
+        description
+          "The G.8275.2 PTP Telecom Profile.";
+        reference
+          "ITU-T G.8275.2 v3.2 (08/2024)";
+      }
+    }
+    description
+      "The PTP Telecom Profile.";
+  }
+
+  typedef G.8275-clock-mode {
+    type enumeration {
+      enum free-run {
+        value 0;
+        description
+          "Free-Run.";
+      }
+      enum acquiring {
+        value 1;
+        description
+          "Acquiring.";
+      }
+      enum locked {
+        value 2;
+        description
+          "Locked.";
+      }
+      enum holdover-within-specification {
+        value 3;
+        description
+          "Holdover-within-specification.";
+      }
+      enum holdover-out-of-specification {
+        value 4;
+        description
+          "Holdover-out-of-specification.";
+      }
+    }
+    description
+      "The synchronization mode of the clock.";
+    reference
+      "ITU-T G.8275.1 v4.2 (08/2024): table 3
+
+       ITU-T G.8275.2 v3.2 (08/2024): table 5";
+  }
+
+  typedef G.8275.1-node-class {
+    type identityref {
+      base G.8275.1-node-class;
+    }
+    description
+      "The node class for G.8275.1 PTP Telecom Profiles.";
+    reference
+      "ITU-T G.8275.1 v4.2 (08/2024): table 4";
+  }
+
+  typedef G.8275.2-node-class {
+    type identityref {
+      base G.8275.2-node-class;
+    }
+    description
+      "The node class for G.8275.2 PTP Telecom Profiles.";
+    reference
+      "ITU-T G.8275.2 v3.2 (08/2024): table 6";
+  }
+
+  /*
+   * Groupings
+   */
+
+  grouping common-ptp-tlp-port-ds-pac {
+    description
+      "Common Port data set (DS) members defined for PTP Telecom
+       Profiles.";
+    leaf local-priority {
+      type uint8;
+      description
+        "The local priority assigned to the PTP Port and used by the
+         Best TimeTransmitter Clock Algorithm (BTCA).";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.1, item d)
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.1, item d)";
+    }
+    leaf two-step-flag {
+      type boolean;
+      config false;
+      description
+        "When set to True, the PTP Port is two-step, otherwise the
+         PTP Port is one-step.";
+      reference
+        "ITU-T G.8265.1 v4.1 (08/2024): clause 6.3.2
+
+         ITU-T G.8275.1 v4.2 (08/2024): clause 6.2.5
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.11";
+    }
+    leaf sync-receipt-timeout {
+      type uint16;
+      description
+        "The number of Sync message intervals that have to pass
+         without receipt of a Sync or a Follow-up message before the
+         triggering the Packet Timing Signal Fail
+         lossOfTimingMessages (PTSF-LOTM).";
+      reference
+        "ITU-T G.8265.1 v4.1 (08/2024): clause 6.7.3.2
+
+         ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.9
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.11";
+    }
+    leaf delay-resp-receipt-timeout {
+      type uint16;
+      description
+        "The number of Delay_Req message intervals that have to pass
+         without receipt of a Delay_Resp message before triggering
+         timeout period for reception of Delay_Resp messages used to
+         trigger the Packet Timing Signal Fail lossOfTimingMessages
+         (PTSF-LOTM).";
+      reference
+        "ITU-T G.8265.1 v4.1 (08/2024): clause 6.7.3.2
+
+         ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.9
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.11";
+    }
+    leaf not-time-transmitter {
+      type boolean;
+      description
+        "When set to True, the PTP Port can never enter the
+         PRE_TIME_TRANSMITTER or the TIME_TRANSMITTER state, and, if
+         the recommended state by the Alternate Best TimeTransmitter
+         Clock Algorithm (BTCA) is BTC_ TIME_TRANSMITTER, then the
+         PTP Port should instead be placed in the PASSIVE state.
+
+         Setting both the time-trasmitter-only and the
+         not-time-transmitter to True is not allowed.";
+      reference
+        "ITU-T G.8275 v4.0 (01/2024): annex E";
+    }
+    leaf monitor-sender {
+      type boolean;
+      description
+        "This attribute is used together with the monitorReceiver
+         attribute in the peer PTP Port, to enable the monitoring of
+         the alternate timeTransmitter time information provided by
+         a peer PTP Port, as shown in Table G-1 of ITU-T G.8275.1.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): annex G";
+    }
+    leaf monitor-receiver {
+      type boolean;
+      description
+        "This attribute is used together with the monitorSender
+         attribute in the peer PTP Port, to enable the monitoring of
+         the alternate timeTransmitter time information provided by
+         a peer PTP Port, as shown in Table G-1 of ITU-T G.8275.1.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): annex G";
+    }
+    leaf sf {
+      type boolean;
+      config false;
+      description
+        "Indicates whether the clock generates (or not) a state
+         decision event when the beginning or the end of a Packet
+         Timing Signal Fail (PTSF) condition occurs at the PTP
+         Port.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.9
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.11";
+    }
+    leaf sf-lotm {
+      type boolean;
+      config false;
+      description
+        "Indicates whether the Packet Timing Signal Fail
+         lossOfTimingMessages (PTSF-LOTM) condition is detected or
+         cleared.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.9";
+    }
+    leaf sf-unusable {
+      type boolean;
+      config false;
+      description
+        "Indicates whether the Packet Timing Signal Fail unusable
+         (PTSF-unusable) condition is detected or cleared.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.9";
+    }
+    leaf sf-su {
+      type boolean;
+      config false;
+      description
+        "Indicates whether the Packet timing Timing signal Signal
+         fail Fail synchronizationUncertain (PTSF-SU) condition is
+         detected or cleared.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.9";
+    }
+    leaf wtr-state {
+      type boolean;
+      config false;
+      description
+        "Reports whether the PTP Port is in the wait-to-restore (WTR)
+         state, or not.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.10
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.12";
+    }
+  }
+
+  grouping common-ptp-tlp-default-ds-pac {
+    description
+      "Common Default data set (DS) members defined for PTP Telecom
+       Profiles.";
+    leaf local-priority {
+      type uint8;
+      description
+        "The local priority assigned to the PTP Instance and used by
+         the Best TimeTransmitter Clock Algorithm (BTCA).";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.1, item e)
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.1, item e)";
+    }
+    leaf holdover-within-spec-duration {
+      type uint16;
+      units "minutes";
+      description
+        "The duration of the holdover-within-specification mode.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.4";
+    }
+    leaf holdover-within-spec-time-error-threshold {
+      type uint16;
+      units "nanoseconds";
+      description
+        "The Time Error threshold of the
+         holdover-within-specification mode.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.4";
+    }
+    leaf holdover-within-spec-capability {
+      type enumeration {
+        enum none {
+          value 0;
+          description
+            "The implementation does not support any of the modes.";
+        }
+        enum duration {
+          value 1;
+          description
+            "The implementation supports only
+             the holdoverWithinSpecificationDuration mode.";
+        }
+        enum time-error-threshold {
+          value 2;
+          description
+            "The implementation supports only
+             holdoverWithinSpecificationTimeErrorThreshold mode.";
+        }
+        enum duration-and-time-error-threshold {
+          value 3;
+          description
+            "The implementation supports both the
+             holdoverWithinSpecificationDuration and the
+             holdoverWithinSpecificationTimeErrorThreshold modes.";
+        }
+      }
+      config false;
+      description
+        "The modes supported by the equipment for the
+         holdover-within-specification behaviour.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): table 5";
+    }
+    leaf holdover-within-spec-remaining-duration {
+      type uint16;
+      units "minutes";
+      config false;
+      description
+        "The estimation of the remaining duration during the
+         holdover-within-specification mode";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.4";
+    }
+    leaf wtr-time {
+      type uint8 {
+        range "0..12";
+      }
+      units "minutes";
+      description
+        "The wait-to-restore (WTR) time.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.3.10
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.7.12";
+    }
+    leaf clock-mode {
+      type union {
+        type G.8275-clock-mode;
+      }
+      config false;
+      description
+        "The synchronization mode of the clock.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.2.9
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.10";
+    }
+    leaf node-class {
+      type union {
+        type G.8275.1-node-class;
+        type G.8275.2-node-class;
+      }
+      config false;
+      description
+        "The clock node's time error performance compliance.
+
+         This attribute applies only to G.8275.1 and G.8275.2
+         PTP Telecom Profile Instances.
+
+         The PTP Telecom Profile of the PTP Instance qualifies
+         whether the node class is a G.8275.1 or a G.8275.2 node
+         class.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2024): clause 6.2.10
+
+         ITU-T G.8275.2 v3.2 (08/2024): clause 6.11";
+    }
+  }
+
+  grouping ptp-profile-version {
+    description
+      "The major and minor version of the PTP Telecom Profile.";
+    reference
+      "IEEE Std 1588-2019: clause 20.3";
+    leaf primary-version {
+      type uint8;
+      description
+        "The primary version of the PTP Telecom Profile.";
+    }
+    leaf revision-number {
+      type uint8;
+      description
+        "The revision number of the PTP Telecom Profile.";
+    }
+  }
+}

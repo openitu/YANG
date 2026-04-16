@@ -1,0 +1,286 @@
+module itut-eth-linear-protection {
+  yang-version 1.1;
+  namespace "urn:itu:t:rec:eth-ne-resilience:yang:"
+          + "itut-eth-linear-protection";
+  prefix eth-lp;
+
+  import ieee802-dot1q-cfm {
+    prefix dot1q-cfm;
+    reference
+      "IEEE Std 802.1Qcx-2020";
+  }
+
+  organization
+    "ITU-T Study Group 15 (SG15) - International Telecommunication
+     Union";
+  contact
+    "tsbsg15@itu.int";
+  description
+    "This module defines a YANG data model for configuring the
+     Ethernet linear protection capabilities defined in ITU-T G.8031.
+
+     Copyright(C) ITU (2025).
+
+     All rights reserved. This version of this YANG module is part of
+     ITU-T G.8052.2 Resilience information/data models for the
+     Ethernet transport network element; see the Recommendation
+     itself for full legal notices.";
+  reference
+    "ITU-T G.8031 v4.1 (03/2018)";
+
+  revision 2025-06-13 {
+    description
+      "Updated copyright and license terms.";
+    reference
+      "ITU-T G.8052.2 v1.2 (06/2025)";
+  }
+  revision 2021-08-06 {
+    description
+      "Initial version.";
+    reference
+      "ITU-T G.8052.2 v1.0 (08/2021)";
+  }
+
+  /*
+   * Typedefs
+   */
+
+  typedef protection-and-bridge-type {
+    type enumeration {
+      enum 1-plus-1-unidirectional-no-aps {
+        description
+          "The 1+1 unidirectional protection type, with no APS.";
+      }
+      enum 1-plus-1-unidirectional-with-aps {
+        description
+          "The 1+1 unidirectional protection type, with APS.";
+      }
+      enum 1-plus-1-bidirectional-with-aps {
+        description
+          "The 1+1 bidirectional protection type, with APS.";
+      }
+      enum 1-for-1-bidirectional-with-aps-using-selector-bridge {
+        description
+          "The 1:1 bidirectional protection type, with APS,
+           using a selector bridge.";
+      }
+      enum 1-for-1-bidirectional-with-aps-using-broadcast-bridge {
+        description
+          "The 1:1 bidirectional protection type, with APS,
+           using a broadcast bridge.";
+      }
+    }
+    description
+      "The Protection Type and Bridge Type for linear protection.";
+    reference
+      "ITU-T G.8031 v4.1 (03/2018): clause 11.4";
+  }
+
+  typedef sd-protection-type {
+    type enumeration {
+      enum enabled {
+        description
+          "Enable protection switching when Signal Degrade (SD)
+           conditions are detected.";
+      }
+      enum disabled {
+        description
+          "Disable protection switching when Signal Degrade (SD)
+           conditions are detected.";
+      }
+    }
+    description
+      "Enable protection switching when Signal Degrade (SD)
+       conditions are detected.";
+    reference
+      "ITU-T G.8031 v4.1 (03/2018): clause 10.6
+
+       ITU-T G.8051 v6.0 (12/2020): table 8-4";
+  }
+
+  typedef reversion-mode {
+    type enumeration {
+      enum revertive {
+        description
+          "Revertive operation.";
+      }
+      enum non-revertive {
+        description
+          "Non-revertive operation.";
+      }
+    }
+    description
+      "The reversion mode (revertive or non-revertive).";
+    reference
+      "ITU-T G.8031 v4.1 (03/2018): clause 10.3";
+  }
+
+  typedef command-type {
+    type enumeration {
+      enum lockout-of-protection {
+        description
+          "The Lockout of protection (LO) external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.1";
+      }
+      enum forced-switch {
+        description
+          "The Forced switch (FS) external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.1";
+      }
+      enum clear {
+        description
+          "The Clear external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.1";
+      }
+      enum manual-switch-to-working {
+        description
+          "The Manual switch to working (MS-W) external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.1";
+      }
+      enum manual-switch-to-protection {
+        description
+          "The Manual switch to protection (MS-P) external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.1";
+      }
+      enum freeze {
+        description
+          "The Freeze external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.2";
+      }
+      enum clear-freeze {
+        description
+          "The clear Freeze external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.2";
+      }
+      enum exercise {
+        description
+          "The Exercise external command.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clauses 9.1";
+      }
+    }
+    description
+      "The type of linear protection external command.";
+    reference
+      "ITU-T G.8031 v4.1 (03/2018): clauses 9.1 and 9.2";
+  }
+
+  /*
+   * Data Nodes
+   */
+
+  container ethernet-linear-protections {
+    description
+      "Ethernet linear protection configuration and state.";
+    list ethernet-linear-protection {
+      key "elp-id";
+      description
+        "Instance of Ethernet linear protection.";
+      action external-command {
+        description
+          "Actions for linear protection external commands.";
+        input {
+          leaf command-type {
+            type command-type;
+            mandatory true;
+            description
+              "The type of the linear protection external command.";
+          }
+        }
+      }
+      leaf elp-id {
+        type uint16;
+        description
+          "An index used to identify a given Ethernet linear
+           protection instance.";
+      }
+      leaf protection-and-bridge-type {
+        type protection-and-bridge-type;
+        default
+          "1-for-1-bidirectional-with-aps-using-selector-bridge";
+        description
+          "The linear protection and bridge types.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clause 11.4";
+      }
+      leaf sd-protection-enabled {
+        type sd-protection-type;
+        default "disabled";
+        description
+          "Enable protection switching when Signal Degrade (SD)
+           conditions are detected.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clause 10.6
+
+           ITU-T G.8051 v6.0 (12/2020): table 8-4";
+      }
+      leaf reversion-mode {
+        type reversion-mode;
+        default "revertive";
+        description
+          "Indicates whether the protection scheme is revertive or
+           non-revertive.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clause 10.3";
+      }
+      leaf wait-to-restore {
+        when '../reversion-mode = "revertive"' {
+          description
+            "When the reversion mode is revertive.";
+        }
+        type uint8 {
+          range "5..12";
+        }
+        units "minutes";
+        default "5";
+        description
+          "The Wait To Restore (WTR) time.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clause 11.13";
+      }
+      leaf hold-off-time {
+        type uint64;
+        units "milli-seconds";
+        default "0";
+        description
+          "The Hold Off Time (HoT).
+
+           The suggested range is 0 to 10
+           seconds, in steps of 100 ms.";
+        reference
+          "ITU-T G.8031 v4.1 (03/2018): clause 11.12";
+      }
+      leaf working-path-mg {
+        type leafref {
+          path "/dot1q-cfm:cfm/dot1q-cfm:maintenance-group"
+             + "/dot1q-cfm:maintenance-group-id";
+        }
+        mandatory true;
+        description
+          "The maintenance group (MG) monitoring the working path.";
+      }
+      leaf protection-path-mg {
+        type leafref {
+          path "/dot1q-cfm:cfm/dot1q-cfm:maintenance-group"
+             + "/dot1q-cfm:maintenance-group-id";
+        }
+        must '. != ../working-path-mg' {
+          error-message
+            "The MG monitoring the protection path shall be
+             different from the MG monitoring the working path.";
+        }
+        mandatory true;
+        description
+          "The maintenance group (MG) monitoring the protection
+           path.";
+      }
+    }
+  }
+}

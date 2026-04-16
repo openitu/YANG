@@ -1,0 +1,163 @@
+module itut-eth-oam-bridge {
+  yang-version 1.1;
+  namespace "urn:itu:t:rec:eth-ne-oam:yang:itut-eth-oam-bridge";
+  prefix eth-oam-bridge;
+
+  import ieee802-dot1q-types {
+    prefix dot1q-types;
+    reference
+      "IEEE Std 802.1Qcx-2020";
+  }
+  import ieee802-dot1q-bridge {
+    prefix dot1q;
+    reference
+      "IEEE Std 802.1Qcx-2020";
+  }
+  import ieee802-dot1q-cfm {
+    prefix dot1q-cfm;
+    reference
+      "IEEE Std 802.1Qcx-2020";
+  }
+  import itut-eth-oam {
+    prefix eth-oam;
+    reference
+      "ITU-T G.8052.1 v2.0 (06/2025)";
+  }
+  import ietf-interfaces {
+    prefix if;
+    reference
+      "IETF RFC 8343";
+  }
+
+  organization
+    "ITU-T Study Group 15 (SG15) - International Telecommunication
+     Union";
+  contact
+    "tsbsg15@itu.int";
+  description
+    "This module defines a YANG data model to bind the CFM and
+     Ethernet OAM modules to an IEEE 802.1Q Bridge to be used,
+     instead of the ieee802-dot1q-cfm-bridge, when the Ethernet
+     OAM Fault Management (FM) implementation is compliant with
+     the state machines defined in ITU-T G.8013 and G.8021 and
+     not fully compliant with the state machines defined in
+     IEEE 802.1Q CFM.
+
+     Copyright(C) ITU (2025).
+
+     All rights reserved. This version of this YANG module is part of
+     ITU-T G.8052.1 Operation, administration, maintenance (OAM)
+     management information and data models for the
+     Ethernet-transport network element; see the Recommendation
+     itself for full legal notices.";
+  reference
+    "ITU-T G.8013 v5.3 (08/2019)
+
+     ITU-T G.8021 v7.1 (08/2019)";
+
+  revision 2025-06-13 {
+    description
+      "Updated copyright and license terms.";
+    reference
+      "G.8052.1 v2.0 (06/2025)";
+  }
+  revision 2021-01-13 {
+    description
+      "Initial version.";
+    reference
+      "ITU-T G.8052.1 v1.0 (01/2021)";
+  }
+
+  /*
+   * Typedefs
+   */
+
+  typedef port-ref {
+    type if:interface-ref;
+    description
+      "This type is used to represent interfaces that can be used
+       by a Bridge device.";
+  }
+
+  /*
+   * Data nodes
+   */
+
+  augment "/dot1q-cfm:cfm/dot1q-cfm:maintenance-group"
+        + "/dot1q-cfm:mep" {
+    when '../eth-oam-bridge:itut-oam-fm-supported' {
+      description
+        "When the Maintenance Group is implementing
+         ITU-T Ethernet OAM FM state machines.";
+    }
+    description
+      "It augments the MEP object with Bridge specific attributes.";
+    leaf bridge-port {
+      type port-ref;
+      must '/if:interfaces/if:interface[if:name=current()]/'
+         + 'dot1q:bridge-port' {
+        error-message
+          "The referenced interface shall be a Bridge Port.";
+      }
+      mandatory true;
+      description
+        "The reference to the interface (e.g., Bridge Port) to which
+         the MEP is attached.";
+      reference
+        "IEEE Std 802.1Q-2018: clause 12.14.7.1.3b";
+    }
+  }
+
+  augment "/dot1q-cfm:cfm/dot1q-cfm:maintenance-group/"
+        + "eth-oam:mip" {
+    when '../eth-oam-bridge:itut-oam-fm-supported' {
+      description
+        "When the Maintenance Group is implementing
+         ITU-T Ethernet OAM FM state machines.";
+    }
+    description
+      "It augments the MIP object with Bridge specific attributes.";
+    leaf bridge-port {
+      type port-ref;
+      mandatory true;
+      description
+        "The reference to the interface (e.g., Bridge Port) to which
+         the MIP is attached.";
+      reference
+        "IEEE Std 802.1Q-2018: clause 12.14.2.1.2a";
+    }
+  }
+
+  augment "/dot1q-cfm:cfm/dot1q-cfm:maintenance-group" {
+    description
+      "It augments the Maintenance Group object with Bridge specific
+       attributes.";
+    leaf itut-oam-fm-supported {
+      type boolean;
+      default "false";
+      description
+        "Indicates whether the Maintenance Group implements ITU-T
+         Ethernet OAM FM state machines.";
+    }
+    leaf-list vlan-id {
+      when '../itut-oam-fm-supported' {
+        description
+          "When the Maintenance Group is implementing
+           ITU-T Ethernet OAM FM state machines.";
+      }
+      type dot1q-types:vlanid;
+      ordered-by user;
+      description
+        "The list of VLAN IDs monitored by the Maintenance Group.
+
+         In the case where more than one VLAN ID values are
+         specified, the first value in the list is the Primary
+         VLAN ID.
+
+         If no VLAN ID value is specified,
+         the Maintenance Group is not attached to any VLAN ID.";
+      reference
+        "IEEE Std 802.1Q-2018: clause 12.14.5.3.2";
+    }
+  }
+}

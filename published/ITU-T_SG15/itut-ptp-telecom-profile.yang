@@ -1,0 +1,404 @@
+module itut-ptp-telecom-profile {
+  yang-version 1.1;
+  namespace "urn:itu:t:rec:sync-ne:yang:itut-ptp-telecom-profile";
+  prefix ptp-tlp;
+
+  import ietf-ptp {
+    prefix ptp;
+    reference
+      "IETF RFC 8575";
+  }
+  import itut-ptp-telecom-profile-types {
+    prefix ptp-tlp-types;
+    reference
+      "ITU-T G.7721.1 v2.0 (08/2025)";
+  }
+
+  organization
+    "ITU-T Study Group 15 (SG15) - International Telecommunication
+     Union";
+  contact
+    "tsbsg15@itu.int";
+  description
+    "This module defines a YANG data model for configuring the
+     PTP Telecom Profiles defined in ITU-T G.8265.1, G.8275.1 and
+     G.8275.2 by augmenting the PTP YANG model defined in
+     IETF RFC8575.
+
+     It is worth noting that the names of the YANG data nodes defined
+     in IETF RFC8575 and in the first revision of this YANG data
+     model are using the legacy terminology while the names of the
+     YANG data nodes defined after the first revision of this YANG
+     data model are using the new terminology.
+
+     The users of this YANG data model are assumed to be familiar
+     with both terminologies, as described in Appendix XII of
+     ITU-T G.8275.
+
+     Copyright(C) ITU (2025).
+
+     All rights reserved. This version of this YANG module is part of
+     ITU-T G.7721.1 Data model of synchronization management; see the
+     Recommendation itself for full legal notices.";
+  reference
+    "ITU-T G.8265.1 v4.1 (08/2024)
+
+     ITU-T G.8275.1 v4.2 (08/2024)
+
+     ITU-T G.8275.2 v3.2 (08/2024)";
+
+  revision 2025-08-22 {
+    description
+      "Updated copyright and license terms.";
+    reference
+      "ITU-T G.7721.1 v2.0 (08/2025)";
+  }
+  revision 2024-12-07 {
+    description
+      "Aligned with the latest versions of the PTP Telecom Profile
+       ITU-T Recommendations.";
+    reference
+      "ITU-T G.7721.1 v1.1 (12/2024)";
+  }
+  revision 2022-06-06 {
+    description
+      "Initial version.";
+    reference
+      "ITU-T G.7721.1 v1.0 (06/2022)";
+  }
+
+  /*
+   * Typedef
+   */
+
+  typedef G.8275.1-clock-type {
+    type enumeration {
+      enum t-gm {
+        description
+          "Telecom Grandmaster (T-GM) device type.";
+      }
+      enum t-tsc {
+        description
+          "Telecom Time Synchronous Clock (T-TSC) device type.";
+      }
+      enum t-bc {
+        description
+          "Telecom Boundary Clock (T-BC) device type.";
+      }
+    }
+    description
+      "The device type of a G.8275.1 PTP Telecom Profile Instance.
+
+       Note that the T-TC device type is not defined because the PTP
+       Transparent Clock is not managed as a PTP Instance in
+       RFC8575.
+
+       Note: the device type used to be called clock type in earlier
+       versions for G.8275.1.";
+    reference
+      "ITU-T G.8275.1 v4.2 (08/2014): clause 6.2.3.1
+
+       IETF RFC8575: section 2.1";
+  }
+
+  typedef G.8275.2-clock-type {
+    type enumeration {
+      enum t-gm {
+        description
+          "Telecom Grandmaster (T-GM) device type.";
+      }
+      enum t-tsc-a {
+        description
+          "Telecom Time Synchronous Clock for Assisted partial timing
+           support (T-TSC-A) device type.";
+      }
+      enum t-tsc-p {
+        description
+          "Telecom Time Synchronous Clock for Partial timing support
+           (T-TSC-P) device type.";
+      }
+      enum t-bc-a {
+        description
+          "Telecom Boundary Clock for Assisted partial timing
+           support (T-BC-A) device type.";
+      }
+      enum t-bc-p {
+        description
+          "Telecom Boundary Clock for Partial timing support
+           (T-BC-P) device type.";
+      }
+    }
+    description
+      "The device type of a G.8275.2 PTP Telecom Profile Instance.
+
+       Note: the device type used to be called clock type in earlier
+       versions for G.8275.2.";
+    reference
+      "ITU-T G.8275.2 v3.2 (08/2014): clause 6.2.3.1
+
+       IETF RFC8575: section 2.1";
+  }
+
+  typedef ptp-telecom-profile-type {
+    type enumeration {
+      enum G.8265.1 {
+        description
+          "The G.8265.1 PTP Telecom Profile.";
+        reference
+          "ITU-T G.8265.1 v4.1 (08/2014)";
+      }
+      enum G.8275.1 {
+        description
+          "The G.8275.1 PTP Telecom Profile.";
+        reference
+          "ITU-T G.8275.1 v4.2 (08/2014)";
+      }
+      enum G.8275.2 {
+        description
+          "The G.8275.2 PTP Telecom Profile.";
+        reference
+          "ITU-T G.8275.2 v3.2 (08/2014)";
+      }
+    }
+    status deprecated;
+    description
+      "The PTP Telecom Profile type for a PTP Instance.
+
+       This data type has been deprecated.
+       The ptp-telecom-profile-type data type defined in
+       itut-ptp-telecom-profile-types should be used instead.";
+  }
+
+  /*
+   * Groupings
+   */
+
+  grouping ptp-profile-version {
+    status deprecated;
+    description
+      "The version of the PTP Telecom Profile.
+
+       This grouping has been deprecated. The ptp-profile-version
+       grouping defined in itut-ptp-telecom-profile-types should be
+       used instead.";
+    reference
+      "IEEE Std 1588-2008: clause 19.3";
+    leaf primary-version {
+      type uint8;
+      description
+        "The primary version of the PTP Telecom Profile.";
+    }
+    leaf revision-number {
+      type uint8;
+      description
+        "The revision number of the PTP Telecom Profile.";
+    }
+  }
+
+  /* 
+   * Data Nodes
+   */
+
+  augment "/ptp:ptp/ptp:instance-list/ptp:port-ds-list" {
+    description
+      "Augment the Port data set (DS) of a PTP Port.";
+    container ptp-telecom-profile {
+      when '../../ptp:default-ds/ptp-telecom-profile' {
+        description
+          "Applies to the PTP Ports of a PTP Telecom Profile
+           Instance.";
+      }
+      description
+        "The additional Port data set (DS) members of the PTP Telecom
+         Profile Port.";
+      reference
+        "ITU-T G.8265.1 v4.1 (08/2014): table A.5
+
+         ITU-T G.8275.1 v4.2 (08/2014): table A.5
+
+         ITU-T G.8275.2 v3.2 (08/2014): table A.5";
+      leaf master-only {
+        type uint8;
+        status obsolete;
+        description
+          "When set to True, the PTP Port is never placed in the
+           SLAVE state, and will always go to the MASTER state.
+
+           This attribute has been obsoleted because its data type is
+           incorrect. The time-transmitter-only attribute shall be
+           used instead.";
+      }
+      leaf time-transmitter-only {
+        type boolean;
+        description
+          "When set to True, the PTP Port shall be in the
+           timeTrasmitterOnly mode: the PTP Port can never enter the
+           TIME_RECEIVER state.
+
+           Setting both the time-trasmitter-only and the
+           not-time-transmitter to True is not allowed.";
+        reference
+          "IEEE Std 1588-2019: clause 8.2.15.5.2";
+      }
+      leaf port-enable {
+        type boolean;
+        description
+          "Indicates whether the PTP Port is enabled (or not) for
+           PTP operation.";
+        reference
+          "IEEE Std 1588-2019: clause 8.2.15.5.1";
+      }
+      uses ptp-tlp-types:common-ptp-tlp-port-ds-pac {
+        refine "sf" {
+          config true;
+        }
+      }
+    }
+  }
+
+  augment "/ptp:ptp/ptp:instance-list/ptp:default-ds" {
+    description
+      "Augment the Default data set (DS) of a PTP Instance.";
+    container ptp-telecom-profile {
+      presence
+        "When present, the PTP Instance is a PTP Telecom Profile
+         Instance.
+
+         The conformance level of optional attributes, default
+         values and value ranges are defined in the relevant PTP
+         Telecom Profile Recommendations, as defined in
+         G.7721.1/Annex A.";
+      description
+        "The additional Default data set (DS) members of the PTP
+         Telecom Profile Instance.";
+      reference
+        "ITU-T G.8265.1 v4.1 (08/2014): table A.1
+
+         ITU-T G.8275.1 v4.2 (08/2014): table A.1
+
+         ITU-T G.8275.2 v3.2 (08/2014): table A.1
+
+         ITU-T G.7721.1 v2.0 (08/2025): Annex A";
+      leaf profile {
+        type ptp-tlp-types:ptp-telecom-profile-type;
+        mandatory true;
+        description
+          "The PTP Telecom Profile which applies to the PTP
+           Instance.";
+      }
+      container profile-version {
+        description
+          "The major and minor version of the PTP Telecom Profile
+           which applies to the PTP Instance.";
+        uses ptp-tlp-types:ptp-profile-version;
+      }
+      leaf profile-identifier {
+        type string;
+        config false;
+        description
+          "The identifier of the PTP Telecom Profile, provided by
+           the system based on the PTP Telecom Profile and version.
+
+           It is a string representing 6-octets separated by '-'
+           (e.g., 00-19-A7-01-02-06).";
+        reference
+          "ITU-T G.8265.1 v4.1 (08/2014): annex A.1
+
+           ITU-T G.8275.1 v4.2 (08/2014): annex A.1
+
+           ITU-T G.8275.2 v3.2 (08/2014): annex A.1";
+      }
+      leaf clock-type {
+        when "((../profile = \"G.8275.1\") or
+              (../profile = \"G.8275.2\"))" {
+          description
+            "Applies only to G.8275.1 and G.8275.2 PTP Telecom
+             Profile Instances.";
+        }
+        type union {
+          type G.8275.1-clock-type;
+          type G.8275.2-clock-type;
+        }
+        mandatory true;
+        description
+          "The device type for the PTP Telecom Profile Instance.
+
+           The PTP Telecom Profile of the PTP Instance qualifies
+           whether the type is a G.8275.1 or a G.8275.2 device type.
+
+           The device type for a G.8265.1 PTP Telecom Profile
+           Instance is implicitly defined by setting the slave-only
+           attribute.
+
+           Note: the device type used to be called clock type in
+           earlier versions for G.8275.1 and G.8275.2.";
+        reference
+          "ITU-T G.8265.1 v4.1 (08/2014): clause 6.2.3.1
+
+           ITU-T G.8275.1 v4.2 (08/2014): clause 6.2.3.1
+
+           ITU-T G.8275.2 v3.2 (08/2014): clause 6.2.3.1";
+      }
+      leaf max-steps-removed {
+        type uint8;
+        description
+          "The value used by the PTP Instance to qualify (or not)
+           received Announce messages in the operation of the Best
+           TimeTransmitter Clock Algorithm (BTCA).";
+        reference
+          "IEEE Std 1588-2019: clause 8.2.1.5.4";
+      }
+      leaf instance-enable {
+        type boolean;
+        description
+          "Indicates whether the PTP Instance is enabled (or not)
+           for PTP operation.";
+        reference
+          "IEEE Std 1588-2019: clause 8.2.1.5.2";
+      }
+      uses ptp-tlp-types:common-ptp-tlp-default-ds-pac;
+    }
+  }
+
+  augment "/ptp:ptp/ptp:transparent-clock-default-ds" {
+    description
+      "Augment the Transparent Clock (TC) Default data set (DS).";
+    container ptp-telecom-profile {
+      presence
+        "When present, the PTP Transparent Clock (TC) Node is a PTP
+         Telecom Profile TC Node.
+
+         The conformance level of optional attributes, default
+         values and value ranges are defined in the relevant PTP
+         Telecom Profile Recommendations, as defined in
+         G.7721.1/Annex A.";
+      description
+        "The additional Default data set (DS) members of the PTP
+         Telecom Profile Transparent Clock (TC) Node.";
+      reference
+        "ITU-T G.8275.1 v4.2 (08/2014): table A.6
+
+         ITU-T G.7721.1 v2.0 (08/2025): Annex A";
+      container profile-version {
+        description
+          "The major and minor version of the G.8275.1 PTP Telecom
+           Profile which applies to the PTP Transparent Clock
+           (TC) Node.";
+        uses ptp-tlp-types:ptp-profile-version;
+      }
+      leaf profile-identifier {
+        type string;
+        config false;
+        description
+          "The identifier of the PTP Telecom Profile, provided by
+           the system based on the G.8275.1 PTP Telecom Profile
+           and version.
+
+           It is a string representing 6-octets separated by '-'
+           (e.g., 00-19-A7-01-02-06).";
+        reference
+          "ITU-T G.8275.1 v4.2 (08/2014): annex A.1";
+      }
+    }
+  }
+}
